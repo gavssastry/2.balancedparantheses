@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+ using namespace std;
+ int max_sub(vector<int> &data)
+{
+    int longest = 0;
+    int lei = 0;
+    int lsi = 0;
+     stack<int> stck;
+     for (unsigned int i = 0; i < data.size(); ++i)
+    {
+        if (data[i] > 0)
+        {
+            stck.push(i);
+        }
+        else
+        {
+            if (!stck.empty() && abs(data[i]) == data[stck.top()])
+            {
+                lsi = min(lsi, stck.top());
+                lei = i;
+                stck.pop();
+             longest = max(lei - lsi - (int)stck.size() + 1, longest);
+            }
+            else
+            {
+                while (!stck.empty())
+                {
+                    stck.pop();
+                }
+                lsi = lei = (i + 1);
+                continue;
+            }
+        }
+    }
+ 
+    return longest;
+}
+ 
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+    vector<int> data;
+    int N = 0;
+     cin >> N;
+     while (N--)
+    {
+        int n = 0;
+        cin >> n;
+        data.push_back(n);
+    }
+       cout << max_sub(data);
+ 
+    return 0;
+}
